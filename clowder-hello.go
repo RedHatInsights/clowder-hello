@@ -22,6 +22,7 @@ func main() {
 		port := *client.LoadedConfig.PublicPort
 		mux.HandleFunc("/", helloHandler)
 		mux.HandleFunc("/healthz", helloHandler)
+		mux.HandleFunc("/api/puptoo/", helloHandler)
 
 		address := fmt.Sprintf(":%d", port)
 
