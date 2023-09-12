@@ -1,7 +1,10 @@
-FROM golang as compiler 
-RUN CGO_ENABLED=0 go get -a -ldflags '-s' \ 
-github.com/redhatinsights/clowder-hello
+FROM golang as compiler
+WORKDIR /app
+COPY go.mod go.sum ./
+RUN go mod download
+COPY clowder-hello.go ./
+RUN CGO_ENABLED=0 GOOS=linux go build -o /clowder-hello
 
 FROM scratch 
-COPY --from=compiler /go/bin/clowder-hello . 
+COPY --from=compiler /clowder-hello . 
 CMD ["./clowder-hello"]
